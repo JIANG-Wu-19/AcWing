@@ -1,8 +1,10 @@
 # 算法基础二周目
 
-## 排序
+## 基础算法
 
-### 快速排序
+### 排序
+
+#### 快速排序
 
 快速排序的基本思想基于分治法
 
@@ -76,7 +78,7 @@ int findK(int num[],int l,int r,int k){
 }
 ```
 
-### 归并排序
+#### 归并排序
 
 归并排序也是一个递归的思想，采用分治法
 
@@ -149,5 +151,98 @@ void merge_sort(int num[],int l,int r){
 }
 ```
 
+### 二分
 
+这是一道二分查找的题目
+
+二分查找肯定发生在一个有序的序列里 **有序才能二分**
+
+二分最难界定的就是边界的取值
+
+题目数的范围中翻译出来就是找到$ \ge x$的第一个数，另一个就是$\le x$的最后一个数
+
+分为两部
+
+1. 查找$ \ge x$的第一个数
+
+   二分找到中点，然后与中点比较
+
+   ```c++
+   int l=0.r=n-1;
+   while(l<r){
+       int mid=l+r>>1;
+       if(a[mid]<x) l=mid+1;
+       else r=mid;
+   }
+   ```
+
+2. 查找$\le x$的最后一个数
+
+   有多种写法
+
+   * 从已找到的范围下限开始二分
+
+     ```c++
+     int l1=l,r1=n;//由于l1可能是最后一位，r1需要取n
+     while(l1+1<r1){
+         int mid=l1+r1>>1;
+         if(a[mid]<=x) l1=mid;
+         else r1=mid;
+     }
+     ```
+
+   * 从0开始二分查找
+
+     ```c++
+     int l1=0,r1=n-1;
+     while(l1<r1){
+         int mid=l1+r1+1>>1;
+         if(a[mid]<=x) l1=mid;
+         else r=mid-1;
+     }
+     ```
+
+完整解决
+
+```c++
+#include<bits/stdc++.h>
+using namespace std;
+
+const int N=100005;
+int n,q,k;
+int num[N];
+
+int main(){
+    cin>>n>>q;
+    
+    for(int i=0;i<n;i++){
+        cin>>num[i];
+    }
+    
+    for(int i=1;i<=q;i++){
+        cin>>k;
+        
+        //找下限
+        int l=0,r=n-1;
+        while(l<r){
+            int mid=l+r>>1;
+            if(num[mid]<k) l=mid+1;
+            else r=mid;
+        }
+        if(num[l]!=k){
+            cout<<"-1 -1"<<endl;
+            continue;
+        }
+        
+        int l1=l,r1=n;
+        while(l1+1<r1){
+            int mid=l1+r1>>1;
+            if(num[mid]<=k) l1=mid;
+            else r1=mid;
+        }
+        
+        cout<<l<<" "<<l1<<endl;
+    }
+}
+```
 
